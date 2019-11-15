@@ -1,0 +1,7 @@
+{
+    "/glpi/apirest.php/*": {
+      "target": "http://ping.webhop.org:8888",
+      "secure": false,
+      "changeOrigin": true
+    }
+  }
