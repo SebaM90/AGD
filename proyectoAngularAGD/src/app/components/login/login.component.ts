@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { ApiService } from 'src/app/services/api.service';
-import { LoginResponse } from 'src/app/shared/interface';
+import { LoginResponse, ItemObject } from 'src/app/shared/interface';
+import { User } from 'src/app/shared/model';
 
 @Component({
   selector: 'app-login',
@@ -10,20 +11,38 @@ import { LoginResponse } from 'src/app/shared/interface';
 })
 export class LoginComponent implements OnInit {
 
+  public usuarioActual: User = new User();
+
   constructor(
     private _user: UserService,
-    private _api: ApiService
+    private _api: ApiService,
   ) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
+
+  allItems:any = [];
 
   btnLogin(){
     const user = (document.querySelector("#user") as HTMLInputElement).value
     const pass = (document.querySelector("#pass") as HTMLInputElement).value
 
     this._api.login(user, pass).subscribe( (response:LoginResponse) => {
-      console.log( response );
+      this.usuarioActual.user = user
+      this.usuarioActual.token = response.session_token
     })
+  }
+
+  btnCloseSession(){
+    this._api.killSession( this.usuarioActual.token ).subscribe( (response:LoginResponse) => {
+      this.usuarioActual.user = ""
+      this.usuarioActual.token = ""
+    })
+  }
+
+  btnGetAllItems(tipoElemento:string){
+    this._api.getAllItems( this.usuarioActual.token, tipoElemento).subscribe( (response:ItemObject) => {
+      this.allItems = response
+    })
+
   }
 }

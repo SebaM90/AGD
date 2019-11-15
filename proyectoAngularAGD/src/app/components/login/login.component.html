@@ -1,7 +1,22 @@
 <label for="user">Usuario</label>
-<input type="text" id="user"> <br>
+<input type="text" id="user" value="morsaline"> <br>
 
 <label for="pass">Password</label>
-<input type="password" id="pass"> <br>
+<input type="password" id="pass" value="LaMorsa666"> <br>
 
-<button (click)="btnLogin()">Login</button>
+<ng-container *ngIf="usuarioActual.token; else deslogueado">
+    <h1>¡ESTAS LOGUEADO {{usuarioActual.user}} !</h1>
+    <h2>{{usuarioActual.user}}</h2>
+    <h2>{{usuarioActual.token}}</h2>
+    <button (click)="btnCloseSession()">Cerrar Sesión</button>
+    <button (click)="btnGetAllItems('Computer')">Ver Computadoras</button>
+    
+    <ul>
+        <li *ngFor="let item of allItems">
+          {{ item.id }} → {{ item.name }}
+        </li>
+    </ul>
+</ng-container>
+<ng-template #deslogueado>
+    <button (click)="btnLogin()">Iniciar Sesión</button>
+</ng-template>
