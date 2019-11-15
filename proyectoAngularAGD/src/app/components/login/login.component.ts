@@ -4,6 +4,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { LoginResponse, ItemObject } from 'src/app/shared/interface';
 import { User } from 'src/app/shared/model';
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -36,6 +37,7 @@ export class LoginComponent implements OnInit {
     this._api.killSession( this.usuarioActual.token ).subscribe( (response:LoginResponse) => {
       this.usuarioActual.user = ""
       this.usuarioActual.token = ""
+      this.allItems = []
     })
   }
 
