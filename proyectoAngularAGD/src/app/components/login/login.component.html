@@ -24,17 +24,19 @@
         <ng-template #deslogueado>
 
             <div class="field">
-            <label>Usuario</label>
-            <input id="user" type="text" name="first-name">
+                <div class="ui left icon input">
+                    <input id="user" type="text" name="first-name" placeholder="Usuario">
+                    <i class="user icon"></i>
+                </div>
             </div>
 
             <div class="field">
-            <label>Contraseña</label>
-            <input id="pass" type="password" name="last-name">
+                <div class="ui left icon input">
+                    <input id="pass" type="password" name="last-name" placeholder="Contraseña">
+                    <i class="lock icon"></i>
+                </div>
             </div>
 
-            <button type="button" class="ui yellow button" (click)="btnLogin()">Iniciar Sesión</button>
+            <button type="button" class="ui button fluid yellow" (click)="btnLogin()">Iniciar Sesión</button>
 
         </ng-template>
-
-</form>
