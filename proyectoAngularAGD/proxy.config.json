@@ -1,6 +1,11 @@
 {
     "/glpi/apirest.php/*": {
-      "target": "http://ping.webhop.org:8888",
+      "target": "https://ping.webhop.org:8889",
+      "secure": false,
+      "changeOrigin": true
+    },
+    "/glpi/front/document.send.php?file=_pictures/": {
+      "target": "https://ping.webhop.org:8889",
       "secure": false,
       "changeOrigin": true
     }

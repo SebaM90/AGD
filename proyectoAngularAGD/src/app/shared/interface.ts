@@ -33,3 +33,28 @@ export interface ItemObject {
     date_creation: string
     is_recursive: number
 }
+
+export interface UserObject {
+    id: number
+    name: string
+    realname: string
+    firstname: string
+    comment: string
+    last_login: string
+    date_mod: string
+    picture: string
+    minPic: string
+    maxPic: string
+}
+
+export interface SessionUser {
+    session: {
+        valid_id: number;
+        glpi_currenttime: string;
+        glpi_use_mode: number;
+        glpiID: number;
+        glpiname: string;
+        glpirealname: string;
+        glpifirstname: string;
+    }
+}

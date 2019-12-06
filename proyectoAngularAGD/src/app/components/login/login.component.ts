@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { UserService } from 'src/app/services/user.service';
+import { Component, OnInit, Input } from '@angular/core';
+import { Observable } from 'rxjs/internal/Observable';
+import { LoaderService } from 'src/app/services/loader.service';
 import { ApiService } from 'src/app/services/api.service';
-import { LoginResponse, ItemObject } from 'src/app/shared/interface';
-import { User } from 'src/app/shared/model';
+import { StorageService } from 'src/app/services/storage.service';
+import { LoginResponse, ItemObject, UserObject, SessionUser } from 'src/app/shared/interface';
+
+import * as $AB from 'jquery';
 
 
 @Component({
@@ -12,39 +15,85 @@ import { User } from 'src/app/shared/model';
 })
 export class LoginComponent implements OnInit {
 
-  public usuarioActual: User = new User();
-
   constructor(
-    private _user: UserService,
+    private _loader: LoaderService,
     private _api: ApiService,
-  ) { }
+    private _storage: StorageService
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this._storage.isToken()) { this.apiLogin() }
+  }
 
-  allItems:any = [];
+  ngAfterContentInit() {
+  }
 
-  btnLogin(){
-    const user = (document.querySelector("#user") as HTMLInputElement).value
-    const pass = (document.querySelector("#pass") as HTMLInputElement).value
+  pruebaJquery(){
+    (<any>$('#boton')).addClass('ui button primary');
+  }
 
-    this._api.login(user, pass).subscribe( (response:LoginResponse) => {
-      this.usuarioActual.user = user
-      this.usuarioActual.token = response.session_token
+  public currentUser:UserObject;
+  public loginUser: string = "sebam90";
+  public loginPass: string = "LaMorsa666";
+
+  uiLoading(val:boolean){
+  (val) ? this._loader.On() : this._loader.Off();
+  }
+
+  apiLogin(){
+    this.uiLoading(true);
+    let user = this.loginUser
+    let pass = this.loginPass
+    this._api.login(user, pass).subscribe(
+      (response:LoginResponse) => {
+        this._storage.setToken( response.session_token )
+        this.apiGetUserInfo()
+      }, (err) => { this.errorHandler(err) },
+            () => { this.completeHandler() }
+    )
+  }
+
+  apiGetUserInfo() {
+    this.uiLoading(true)
+    this._api.getSession().subscribe( (response:SessionUser) =>  {
+      this._api.getUser(response.session.glpiID).subscribe( (response2:UserObject) => {
+        this.currentUser = response2
+        this.currentUser.minPic = "https://ping.webhop.org:8889/glpi/front/document.send.php?file=_pictures/" + this.currentUser.picture.replace('.png','_min.png')
+        this.currentUser.maxPic = "https://ping.webhop.org:8889/glpi/front/document.send.php?file=_pictures/" + this.currentUser.picture
+      }, (err) => { this.errorHandler(err) },
+            () => { this.completeHandler() }
+      )
     })
   }
 
-  btnCloseSession(){
-    this._api.killSession( this.usuarioActual.token ).subscribe( (response:LoginResponse) => {
-      this.usuarioActual.user = ""
-      this.usuarioActual.token = ""
-      this.allItems = []
-    })
+  apiCloseSession(){
+    this.uiLoading(true)
+    this._api.killSession().subscribe(
+      (response:LoginResponse) => {
+        this._storage.removeToken()
+      }, (err) => { this.errorHandler(err) },
+            () => { this.completeHandler() }
+    )
   }
 
-  btnGetAllItems(tipoElemento:string){
-    this._api.getAllItems( this.usuarioActual.token, tipoElemento).subscribe( (response:ItemObject) => {
-      this.allItems = response
-    })
+  // apiGetAllItems(tipoElemento:string){
+  //   this.uiLoading(true)
+  //   this._api.getAllItems(tipoElemento).subscribe(
+  //     (response:ItemObject) => {
+  //       this.allItems = response
+  //       this.uiLoading(false)
+  //     }, (err) => {
+  //       this.errorHandler(err)
+  //     }
+  //   )
+  // }
 
+  private errorHandler(err:any){
+    alert( JSON.stringify(err) );
+    console.warn(err);
+  }
+
+  private completeHandler(){
+    this._loader.Off();
   }
 }

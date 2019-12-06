@@ -1,16 +1,36 @@
+<div *ngIf="_loader.active" class="ui active inverted dimmer">
+  <div class="ui massive text loader">Cargando</div>
+</div>
+
+<button (click)="_sidenav.toggle()" class="circular ui icon button">
+  <i class="icon exchange"></i>
+</button>
+
+<div class="ui left vertical labeled menu sidebar inverted" >
+  <img class="ui image centered" width="60%" style="margin-top:5px;" alt="http://www.agdseguridad.com.ar" src="assets/logo.png">
+  <a *ngIf="!_storage.isToken()" routerLink="login" class="item"> <i class="icon caret right"></i>Iniciar Sesión</a>
+  <a *ngIf="_storage.isToken()" routerLink="qr" class="item"> <i class="icon caret right"></i>Leer Información</a>
+  <a *ngIf="_storage.isToken()" (click)="closeSession()" class="item"> <i class="icon caret right"></i>Cerrar Sesión</a>
+</div>
+<div class="pusher">  
+
 <div class="ui one column stackable center aligned page grid">
+
   <div class="column twelve wide">
 
     <div class="ui divider"></div>
 
-    <img class="ui image centered" style="margin-bottom:15px;" src="http://www.agdseguridad.com.ar/images/logo.png">
+    <img class="ui image centered" style="margin-bottom:15px;" alt="http://www.agdseguridad.com.ar" src="assets/logo.png">
 
-    <app-login></app-login>
+    <router-outlet></router-outlet>
 
     <div class="ui divider"></div>
 
   </div>
 </div>
+
+</div>
+
 
 
 <!-- <div class="container">

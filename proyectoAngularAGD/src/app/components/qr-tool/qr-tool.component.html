@@ -1,0 +1,22 @@
+<!-- <hr>
+<h2>Apunte hacia el Código QR:</h2>
+<h4>LOGIN: {{ (_api.resultado | async).session_token }}</h4>
+
+<button class="ui button" type="button" (click)="lectura=''">LEER Codigo QR</button> -->
+
+<button class="ui button" type="button" (click)="QR_on=!QR_on">LEER QR: {{QR_on}}</button>
+<!-- <app-qr-tool [switchedOn]="QR_on"></app-qr-tool> -->
+
+<div *ngIf="switchedOn" id="qrcodeid">
+        <qr-code-all [canvasWidth]="widthViewport"
+            [debug]="false"
+            [stopAfterScan]="true"
+            [updateTime]="100"
+            (onCapture)="captureImage($event)"
+            [scanQrCode]="true">
+        </qr-code-all>
+</div>
+
+<div *ngIf="lectura">
+    <pre> {{ lectura }}  </pre>
+</div>
