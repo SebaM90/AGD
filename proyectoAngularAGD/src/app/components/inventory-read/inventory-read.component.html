@@ -1,1 +1,26 @@
-<p>inventory-read works!</p>
+<div *ngIf="showTittle" class="ui huge block header centered">Inventario</div>
+
+<div class="ui one column center aligned page grid">
+
+<div class="row">
+    <button *ngIf="!qrON && showContent" class="ui blue button" type="button" (click)="qrON=true"> <i class="camera icon"></i> Activar Cámara</button>
+</div>
+
+<ng-container *ngIf="qrON">
+    <app-qr-tool [switchedOn]="qrON" (qrReadResult)="getQR($event)"></app-qr-tool>
+</ng-container>
+
+</div>
+
+<div *ngIf="!qrON && showContent" class="ui one column center aligned yellow inverted segment">
+  
+  <div class="ui center aligned compact segments">
+
+    <div class="ui left aligned segment"> <a class="ui red ribbon label">ELEMENTO</a> <b>{{ "Computer" | uppercase }}</b> </div>
+    <div class="ui tiny left aligned segment"> <a class="ui tiny red ribbon label">ID</a> {{ item?.id }} </div>
+    <div class="ui tiny left aligned segment"> <a class="ui tiny red ribbon label">NOMBRE</a> {{ item?.name }} </div>
+    <div class="ui left aligned segment"> <a class="ui tiny red ribbon label">INVENTARIO</a> {{ item?.otherserial }} </div>
+  
+  </div>
+
+</div>

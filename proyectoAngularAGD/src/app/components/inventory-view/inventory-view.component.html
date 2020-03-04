@@ -1,0 +1,28 @@
+<div class="ui center aligned page grid">
+
+  <table class="ui celled striped orange table">
+
+      <thead>
+          <tr class="center aligned">
+              <th><i class="exclamation circle icon"></i>Nº</th>
+                            <th><i class="info icon"></i>-</th>
+                            <th><i class="bars icon"></i>-</th>
+          </tr>
+      </thead>
+
+      <tbody>
+          <tr *ngFor="let item of tickets; let indice=index">
+
+              <ng-container *ngIf="item.status<=4">
+                  <td class="center aligned"> <i class="exclamation circle icon"></i>   N° {{item.id}}    </td>
+                                         <td>               <i class="info icon"></i>      {{item.name}}  </td>
+              <!--<td [innerHtml]="item.content | entidadesHtml"></td> -->
+                                         <td>               <i class="bars icon"></i> <em> {{item.content | entidadesHtml}} </em> </td>
+              </ng-container>
+
+          </tr>
+      </tbody>
+
+  </table>
+
+</div>

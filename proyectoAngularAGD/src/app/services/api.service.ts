@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { StorageService } from 'src/app/services/storage.service';
-import { LoginResponse, ItemObject, UserObject, SessionUser } from '../shared/interface';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { LoginResponse, ItemComputer, UserObject, SessionUser } from '../shared/interface';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 
 @Injectable({
@@ -22,6 +22,10 @@ export class ApiService {
   private CONTENT_TYPE:string = "application/json"
   private APP_TOKEN:string = "cwU8wzJLgVnt2nGf2dcYW4pDxuunAORSkdGTYtxk"
 
+  tokenVerify(): Observable<any> {
+    let headers = new HttpHeaders({ 'Content-Type': this.CONTENT_TYPE, 'App-Token':this.APP_TOKEN, 'Session-Token': this._storage.getToken()  });
+    return this._http.get( this.API_URL + "getActiveProfile", {headers: headers} )
+  }
 
   login(user: string, pass: string): Observable<LoginResponse> {
     let headers = new HttpHeaders({ 'Content-Type': this.CONTENT_TYPE, 'App-Token':this.APP_TOKEN, 'Authorization':'Basic ' + btoa(user + ":" + pass)  });
@@ -43,14 +47,25 @@ export class ApiService {
     return this._http.get<UserObject>( this.API_URL + "user/" + id, {headers: headers} );
   }
 
-  getAllItems(item:string): Observable<ItemObject> {
+  getAllItems(item:string, parameters:any): Observable<ItemComputer> {
     let headers = new HttpHeaders({ 'Content-Type': this.CONTENT_TYPE, 'App-Token': this.APP_TOKEN, 'Session-Token': this._storage.getToken()});
-    return this._http.get<ItemObject>( this.API_URL + item, {headers: headers} )
+    let params = new HttpParams({ fromObject: parameters });
+    return this._http.get<ItemComputer>( this.API_URL + item, {headers: headers, params: params} )
   }
 
-  getItem(item:string, id:number): Observable<ItemObject> {
+  getItem(item:string, id:number): Observable<ItemComputer> {
     let headers = new HttpHeaders({ 'Content-Type': this.CONTENT_TYPE, 'App-Token': this.APP_TOKEN, 'Session-Token': this._storage.getToken()});
-    return this._http.get<ItemObject>( this.API_URL + item + "\\" + id, {headers: headers} )
+    return this._http.get<ItemComputer>( this.API_URL + item + "\\" + id, {headers: headers} )
+  }
+
+  setItem(item:string, content:object): Observable<ItemComputer> {
+    let headers = new HttpHeaders({ 'Content-Type': this.CONTENT_TYPE, 'App-Token': this.APP_TOKEN, 'Session-Token': this._storage.getToken()});
+    return this._http.post<ItemComputer>( this.API_URL + item, content, {headers: headers} )
+  }
+
+  setItemToTicket(id:number, content:object ){
+    let headers = new HttpHeaders({ 'Content-Type': this.CONTENT_TYPE, 'App-Token': this.APP_TOKEN, 'Session-Token': this._storage.getToken()});
+    return this._http.post<ItemComputer>( this.API_URL + 'ticket/' + id + '/item_ticket', content, {headers: headers} )
   }
 
 

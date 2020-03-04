@@ -1,36 +1,54 @@
+
 <div *ngIf="_loader.active" class="ui active inverted dimmer">
   <div class="ui massive text loader">Cargando</div>
 </div>
 
-<button (click)="_sidenav.toggle()" class="circular ui icon button">
-  <i class="icon exchange"></i>
-</button>
+<!-- <button id="btnMenu" (click)="_sidenav.toggle()" class="ui icon circular button fixed huge" *ngIf="_storage.isToken()">
+  <i class="icon hand point left"></i>
+</button> -->
 
-<div class="ui left vertical labeled menu sidebar inverted" >
-  <img class="ui image centered" width="60%" style="margin-top:5px;" alt="http://www.agdseguridad.com.ar" src="assets/logo.png">
-  <a *ngIf="!_storage.isToken()" routerLink="login" class="item"> <i class="icon caret right"></i>Iniciar Sesión</a>
-  <a *ngIf="_storage.isToken()" routerLink="qr" class="item"> <i class="icon caret right"></i>Leer Información</a>
-  <a *ngIf="_storage.isToken()" (click)="closeSession()" class="item"> <i class="icon caret right"></i>Cerrar Sesión</a>
+<i id="btnMenu" *ngIf="_storage.isToken()" (click)="_sidenav.toggle()" class="icon bordered grey large chevron inverted right"></i>
+
+<div class="ui wide sidebar left vertical labeled menu inverted">
+
+  <!-- <img class="ui image centered" width="60%" style="margin-top:5%;" alt="http://www.agdseguridad.com.ar" src="assets/logo.png"> -->
+
+  <a *ngIf="!_storage.isToken()" routerLink="login" class="item"> <i class="icon caret right"></i> Iniciar Sesión</a>
+
+  <ng-container *ngIf="_storage.isToken()">
+    <a routerLink="reclamos/nuevo" class="item"> <i class="icon caret right"></i>Nuevo Ticket</a>
+    <a routerLink="reclamos/ver" class="item"> <i class="icon caret right"></i>Ver mis Tickets</a>
+    <a routerLink="inventario/escanear" class="item"> <i class="icon caret right"></i>Leer Código QR</a>
+    <!-- <a routerLink="inventario/ver" class="item"> <i class="icon caret right"></i> Ver Inventario </a> -->
+  </ng-container>
+
+  <a *ngIf="_storage.isToken()" (click)="closeSession()" class="item"> <i class="icon caret right"></i> Cerrar Sesión</a>
+
+  <div id="idLastUpdate" class="item">Ver 1.7rc • 04-03-2020</div>
+
 </div>
-<div class="pusher">  
+<div class="pusher">
 
-<div class="ui one column stackable center aligned page grid">
+  <div class="ui one column stackable page grid">
+  <!-- <div class="ui one column stackable center aligned page grid"></div> -->
 
-  <div class="column twelve wide">
+    <div class="column twelve wide">
 
-    <div class="ui divider"></div>
+      <!-- <div class="ui divider"></div> -->
 
-    <img class="ui image centered" style="margin-bottom:15px;" alt="http://www.agdseguridad.com.ar" src="assets/logo.png">
+      <div id="imgLogo" class="ui">
+        <img class="ui small image centered" style="margin-bottom:15px;" alt="http://www.agdseguridad.com.ar" src="assets/logo2.png">
+      </div>
 
-    <router-outlet></router-outlet>
+      <router-outlet></router-outlet>
 
-    <div class="ui divider"></div>
+      <!-- <div class="ui divider"></div> -->
 
+    </div>
+    
   </div>
-</div>
 
 </div>
-
 
 
 <!-- <div class="container">

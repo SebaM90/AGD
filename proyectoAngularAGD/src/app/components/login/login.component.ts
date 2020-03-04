@@ -1,11 +1,13 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
+import { timer } from 'rxjs/internal/observable/timer';
 import { LoaderService } from 'src/app/services/loader.service';
 import { ApiService } from 'src/app/services/api.service';
 import { StorageService } from 'src/app/services/storage.service';
-import { LoginResponse, ItemObject, UserObject, SessionUser } from 'src/app/shared/interface';
-
+import { LoginResponse, UserObject, SessionUser } from 'src/app/shared/interface';
+import { Router } from '@angular/router';
 import * as $AB from 'jquery';
+import { observable } from 'rxjs';
 
 
 @Component({
@@ -16,13 +18,16 @@ import * as $AB from 'jquery';
 export class LoginComponent implements OnInit {
 
   constructor(
+    private router: Router,
     private _loader: LoaderService,
     private _api: ApiService,
     private _storage: StorageService
   ) {}
 
   ngOnInit() {
-    if (this._storage.isToken()) { this.apiLogin() }
+    ( this._storage.getSavedUser() ) ? this.loginUser = this._storage.getSavedUser() : this.loginUser = '';
+    ( this._storage.getSavedPass() ) ? this.loginPass = this._storage.getSavedPass() : this.loginPass = '';
+    if ( this._storage.isToken() ) { this.apiLogin() }
   }
 
   ngAfterContentInit() {
@@ -33,11 +38,11 @@ export class LoginComponent implements OnInit {
   }
 
   public currentUser:UserObject;
-  public loginUser: string = "sebam90";
-  public loginPass: string = "LaMorsa666";
+  public loginUser: string = '' //"sebam90";
+  public loginPass: string = '' //"LaMorsa666";
 
   uiLoading(val:boolean){
-  (val) ? this._loader.On() : this._loader.Off();
+    (val) ? this._loader.On() : this._loader.Off();
   }
 
   apiLogin(){
@@ -46,10 +51,18 @@ export class LoginComponent implements OnInit {
     let pass = this.loginPass
     this._api.login(user, pass).subscribe(
       (response:LoginResponse) => {
-        this._storage.setToken( response.session_token )
-        this.apiGetUserInfo()
+        this._storage.setToken( response.session_token );
+
+        this._storage.setSavedUser(user);
+        this._storage.setSavedPass(pass);
+        
+        // MOSTRAR INFORMACION DE USUARIO -------
+        // this.apiGetUserInfo();       
+        this.router.navigate(['/reclamos/nuevo']); // Quitar esta linea si se descomenta lo anterior
+        // --------------------------------------
+
       }, (err) => { this.errorHandler(err) },
-            () => { this.completeHandler() }
+      () => { this.completeHandler() }
     )
   }
 
@@ -60,20 +73,42 @@ export class LoginComponent implements OnInit {
         this.currentUser = response2
         this.currentUser.minPic = "https://ping.webhop.org:8889/glpi/front/document.send.php?file=_pictures/" + this.currentUser.picture.replace('.png','_min.png')
         this.currentUser.maxPic = "https://ping.webhop.org:8889/glpi/front/document.send.php?file=_pictures/" + this.currentUser.picture
+
+          timer(1500).subscribe( () => { 
+            this.router.navigate(['/reclamos/nuevo']); // DELAY / RETRASO ANTES DE RE-DIRIGIR A LA PAGINA DE NUEVOS RECLAMOS
+          })
+          this.router.navigate(['/reclamos/nuevo']);
+          
       }, (err) => { this.errorHandler(err) },
             () => { this.completeHandler() }
       )
     })
   }
 
-  apiCloseSession(){
-    this.uiLoading(true)
-    this._api.killSession().subscribe(
-      (response:LoginResponse) => {
-        this._storage.removeToken()
-      }, (err) => { this.errorHandler(err) },
-            () => { this.completeHandler() }
-    )
+  apiCloseSession(deleteSavedCredentials:boolean=false) {
+
+    if ( this._storage.isToken() ) { // Primero veo si ya NO cerró sesion aun
+
+        if ( confirm("¿Esta seguro?") ) {
+
+          this.uiLoading(true)
+
+          this._api.killSession().subscribe(
+            (response:LoginResponse) => {
+              this._storage.removeToken();
+              if (deleteSavedCredentials) this._storage.removeALL();
+            }, (err) => { this.errorHandler(err) },
+                  () => { this.completeHandler() }
+          )
+
+        }
+
+    } else if ( deleteSavedCredentials ) { // Si ya esta cerrada la sesion PERO quiere borrar credenciales
+
+        this.removeAllClose(); // Borro credenciales del storage y limipio inputs
+
+    }
+
   }
 
   // apiGetAllItems(tipoElemento:string){
@@ -89,11 +124,19 @@ export class LoginComponent implements OnInit {
   // }
 
   private errorHandler(err:any){
-    alert( JSON.stringify(err) );
     console.warn(err);
+    this.removeAllClose();
+    this._loader.Off();
+    alert(err.error[1])
   }
 
   private completeHandler(){
     this._loader.Off();
+  }
+
+  private removeAllClose(){
+    this.loginUser = '';
+    this.loginPass = '';
+    this._storage.removeALL();
   }
 }

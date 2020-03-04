@@ -1,0 +1,18 @@
+#btnMenu {
+  position: fixed;
+  z-index: 999;
+}
+
+#imgLogo {
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+#idLastUpdate {
+      position: absolute !important;
+           top: CALC(100% - 40px);
+         width: 100%;
+        border: 0 none !important;
+    text-align: left;
+         color:grey; 
+}

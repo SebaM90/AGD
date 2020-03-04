@@ -2,7 +2,16 @@ export interface LoginResponse {
     session_token: string
 }
 
-export interface ItemObject {
+export interface QRCodeRead {
+    type: string
+    id: number
+    id_inventory: string
+    qr_date: string
+    qr_hour: string
+}
+
+export interface ItemComputer {
+    itemType: string // Este esta Hardcodeado
     id: number
     entities_id: number
     name: string

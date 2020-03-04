@@ -11,6 +11,8 @@ export class StorageService {
 
   protected PUBLIC_KEY:string = '<AA48o*+9)kPvZeA$D;Dvws%)soD}R';
   private keyStorageToken = 'agd-user-token';
+  private keyStorageUser = 'agd-user';
+  private keyStoragePass = 'agd-pass';
 
   private encrypt(value:string){
     return CryptoJS.AES.encrypt( value, this.PUBLIC_KEY )
@@ -43,15 +45,32 @@ export class StorageService {
     }
   }
 
-  getToken(){
-    return this.getData(this.keyStorageToken)
+  getToken(){    return this.getData(this.keyStorageToken)  }
+
+  getSavedUser() {
+    if (typeof this.getData(this.keyStorageUser) === 'undefined') {
+      return '';
+    } else{
+      return this.getData(this.keyStorageUser)
+    }
   }
 
-  setToken(data:string){
-    this.setData(this.keyStorageToken, data)
+  getSavedPass() {
+    if (typeof this.getData(this.keyStoragePass) === 'undefined') {
+      return '';
+    } else{
+      return this.getData(this.keyStoragePass);
+    }
   }
 
-  removeToken(){
-    this.removeData(this.keyStorageToken)
-  }
+  setToken(data:string){    this.setData(this.keyStorageToken, data)  }
+  setSavedUser(data:string){    this.setData(this.keyStorageUser, data)  }
+  setSavedPass(data:string){    this.setData(this.keyStoragePass, data)  }
+
+  removeToken(){    this.removeData(this.keyStorageToken)  }
+  removeSavedUser(){    this.removeData(this.keyStorageUser)  }
+  removeSavedPass(){    this.removeData(this.keyStoragePass)  }
+
+  removeALL(){    localStorage.clear();  }
+
 }

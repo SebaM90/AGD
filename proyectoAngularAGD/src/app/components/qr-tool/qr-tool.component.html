@@ -1,22 +1,33 @@
-<!-- <hr>
-<h2>Apunte hacia el Código QR:</h2>
-<h4>LOGIN: {{ (_api.resultado | async).session_token }}</h4>
 
-<button class="ui button" type="button" (click)="lectura=''">LEER Codigo QR</button> -->
+<div class="ui center aligned yellow segment">
 
-<button class="ui button" type="button" (click)="QR_on=!QR_on">LEER QR: {{QR_on}}</button>
-<!-- <app-qr-tool [switchedOn]="QR_on"></app-qr-tool> -->
+    <button class="ui circular secondary button" (click)="toggleCamera()">
+        <i class="exchange icon"></i> Cambiar
+    </button>
 
-<div *ngIf="switchedOn" id="qrcodeid">
-        <qr-code-all [canvasWidth]="widthViewport"
-            [debug]="false"
-            [stopAfterScan]="true"
-            [updateTime]="100"
-            (onCapture)="captureImage($event)"
-            [scanQrCode]="true">
-        </qr-code-all>
-</div>
+    <button class="ui circular red button" (click)="outputLectura(null)">
+        <i class="close icon"></i> Cerrar
+    </button>
+    
+    <br><br>
 
-<div *ngIf="lectura">
-    <pre> {{ lectura }}  </pre>
+    <!-- <div *ngIf="switchedOn" id="qrcodeid">
+            <qr-code-all [canvasWidth]="widthViewport"
+                [debug]="false"
+                [stopAfterScan]="true"
+                [updateTime]="200"
+                (onCapture)="outputLectura($event)"
+                [scanQrCode]="true">
+            </qr-code-all>
+    </div> -->
+
+    <div *ngIf="switchedOn" id="qrcodeid">
+        <zxing-scanner #scanner
+                [enable]="switchedOn"
+                (autofocusEnabled)="true"
+                (camerasFound)="camerasFoundHandler($event)"
+                (scanSuccess)="outputLectura($event)"
+        ></zxing-scanner>
+    </div>
+
 </div>
