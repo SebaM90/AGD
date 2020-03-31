@@ -8,20 +8,23 @@
 
     <div class="field">
       <div class="ui toggle checkbox">
-        <input type="checkbox" (change)="checkbox()">
+        <input type="checkbox" (change)="getTicketsAccordingCheckbox()">
         <label>Ver únicamente los resueltos</label>
       </div>
     </div>
+
     <br/><br/>
+    
     <div class="field">
       <div class="ui labeled input">
         <div class="ui label"> Cantidad máxima: </div>
-        <input type="number" [(ngModel)]="cantVer" (change)="getAlltickets()">
+        <input type="number" [(ngModel)]="cantVer" (change)="getTicketsAccordingCheckbox()">
       </div>
     </div>
 
-    <table class="ui celled striped orange fixed table">
 
+    <table class="ui celled striped orange fixed table">
+      
         <thead>
             <tr class="center aligned">
                 <th><i class="exclamation circle icon"></i>Nº TICKET</th>
@@ -30,24 +33,43 @@
             </tr>
         </thead>
 
-        <tbody>
+        <!-- Hago un if para que cuando haya un LOADING se oculte el body para que se vea bien el 'Cargando' en el centro de la pantalla -->
+        <tbody *ngIf="!this._loader.active">
+          
+          <ng-container *ngFor="let item of tickets | paginate: { itemsPerPage: 10, currentPage: p }; let indice=index">
 
-          <ng-container *ngFor="let item of tickets; let indice=index">
-
-            <tr *ngIf="isStatusOnArray(item.status)" [ngClass]="{'positive': item.status == 5}">
-
-              <td class="center aligned"> <i class="icon" [ngClass]="(item.status == 5) ? 'check circle' : 'exclamation circle'"></i>   N° {{item.id}}    </td>
+            <tr  [ngClass]="{'positive': item.status >= 5}" onclick="console.log(this)">
+              <td class="center aligned"> <i class="icon" [ngClass]="(item.status >= 5) ? 'check circle' : 'exclamation circle'"></i>   N° {{item.id}}    </td>
               <td>               <i class="info icon"></i>      {{item.name}}  </td>
               <!--<td [innerHtml]="item.content | entidadesHtml"></td> -->
               <td>               <i class="bars icon"></i> <em> {{item.content | entidadesHtml}} </em> </td>
-              
             </tr>
 
-          </ng-container>
 
+          </ng-container>
+         
         </tbody>
 
+        <tfoot class="full-width">
+            <tr>
+              <td>
+                  <pagination-controls (pageChange) = 'p = $event'
+                                          autoHide = 'true'
+                                        responsive = 'false'
+                                    directionLinks= 'true'
+                                      previousLabel= 'Anterior'
+                                          nextLabel= 'Siguiente'
+                                            maxSize= '50'
+                                creenReaderPaginationLabel= 'Paginación'
+                                screenReaderPageLabel= 'página'
+                                screenReaderCurrentLabel= 'Estás en la página'>
+                  </pagination-controls>
+              </td>
+            </tr>
+        </tfoot>
+
     </table>
+
 
 </div>
 <!--

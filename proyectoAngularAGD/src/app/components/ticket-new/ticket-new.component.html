@@ -1,53 +1,58 @@
+<div id="_zoom" class="ui secondary segment">
+  <!-- <div class="ui huge block header centered">Nuevo Ticket</div> -->
 
-<!-- <div class="ui huge block header centered">Nuevo Ticket</div> -->
-
-<h2 class="ui centered header">
-  Nuevo Ticket
-  <div class="sub header">de <b>{{this._storage.getSavedUser()}}</b></div>
-</h2>
+  <h2 class="ui centered header">
+    Nuevo Ticket
+    <div class="sub header">de <b>{{this._storage.getSavedUser()}}</b></div>
+  </h2>
 
 
-<form *ngIf="ticket.id==0" class="ui huge form {{uiLoadingClass}}">
+  <form *ngIf="ticket.id==0" class="ui huge form {{uiLoadingClass}}">
 
-  
-  <div class="ui one column center aligned page grid">
-    <div class="row">
-      <button *ngIf="!qrON" class="ui blue button" type="button" (click)="qrON=true;"> <i class="qrcode icon"></i> Escanear QR</button>
-      <app-inventory-read *ngIf="qrON" [showTittle]=false [showContent]=false (outItem)="pushNewItem($event)"></app-inventory-read>
+
+    <div class="ui one column center aligned page grid">
+      <div class="row">
+        <button *ngIf="!qrON" class="ui blue button" type="button" (click)="qrON=true;"> <i class="qrcode icon"></i> Escanear QR</button>
+        <app-inventory-read *ngIf="qrON" [showTittle]=false [showContent]=false (outItem)="pushNewItem($event)"></app-inventory-read>
+      </div>
     </div>
-  </div>
 
 
-  <div *ngIf="arrayItems.length>0" class="field">
-    <label>Elementos</label>
-    <a *ngFor="let item of arrayItems; index as i"  class="ui big orange label">
-      {{spanish(item.itemType)}}: {{item.otherserial}} → {{item.name}} <i (click)="arrayItems.splice(i,1);" class="delete icon"></i>
-    </a>
-  </div>
-
-  <div class="field">
-    <label>Título</label>
-    <input type="text" placeholder="No puedo ingresar al sistema de pagos" [(ngModel)]="ticket.name" name="titulo" autofocus>
-  </div>
-
-  <div class="field">
-    <label>Descripción</label>
-    <textarea rows="4" placeholder="Se muestra una leyenda de 'Error de contraseña'" [(ngModel)]="ticket.content" name="descripcion"></textarea>
-  </div>
-
-  <div class="ui one column stackable center aligned page grid">
-    <!-- <button class="ui button yellow" (click)="apiUpdateDocument()" ><i class="file image icon"></i>Adjuntar Archivo</button> -->
-    <button class="ui button positive" (click)="apiCreateTicket()"  [ngClass]="{'disabled': ticket.name.length == 0}"><i class="check icon"></i>CREAR TICKET</button>
-  </div>
-</form>
-
-<div class="ui segment" *ngIf="ticket.id>0">
-  <div class="ui big positive message">
-    <div class="header">
-      TICKET N° <b>{{ticket.id}}</b>
+    <div *ngIf="arrayItems.length>0" class="field">
+      <label>Elementos</label>
+      <a *ngFor="let item of arrayItems; index as i"  class="ui big orange label">
+        {{spanish(item.itemType)}}: {{item.otherserial}} → {{item.name}} <i (click)="arrayItems.splice(i,1);" class="delete icon"></i>
+      </a>
     </div>
-    <p>Hemos recibido satisfactoriamente su ticket: "<i>{{ticket.name}}</i>" </p>
+
+    <div class="field">
+      <label>Título</label>
+      <input type="text" placeholder="No puedo ingresar al sistema de pagos" [(ngModel)]="ticket.name" name="titulo" autofocus>
+    </div>
+
+    <div class="field">
+      <label>Descripción</label>
+      <textarea rows="4" placeholder="Se muestra una leyenda de 'Error de contraseña'" [(ngModel)]="ticket.content" name="descripcion"></textarea>
+    </div>
+
+    <!-- <div class="ui one column center aligned page grid"> -->
+      <!-- <button class="ui button yellow" (click)="apiUpdateDocument()" ><i class="file image icon"></i>Adjuntar Archivo</button> -->
+      <div class="row">
+        <button class="ui button fluid positive" (click)="apiCreateTicket()"  [ngClass]="{'disabled': ticket.name.length == 0}"><i class="check icon"></i>CREAR TICKET</button>
+      </div>
+    <!-- </div> -->
+
+  </form>
+
+  <div class="ui segment" *ngIf="ticket.id>0">
+    <div class="ui big positive message">
+      <div class="header">
+        TICKET N° <b>{{ticket.id}}</b>
+      </div>
+      <p>Hemos recibido satisfactoriamente su ticket: "<i>{{ticket.name}}</i>" </p>
+    </div>
+
+    <button class="ui button fluid olive" (click)="reiniciar()"><i class="thumbs up outline icon"></i> OK</button>
   </div>
 
-  <button class="ui button fluid olive" (click)="reiniciar()"><i class="thumbs up outline icon"></i> OK</button>
 </div>

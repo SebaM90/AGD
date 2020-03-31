@@ -4,6 +4,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { SidenavService } from './services/sidenav.service';
 import { LoaderService } from './services/loader.service';
+import { Meta } from '@angular/platform-browser';
 import * as Hammer from 'hammerjs';
 
 
@@ -20,12 +21,16 @@ export class AppComponent implements OnInit {
   title = 'proyectoAngularAGD';
 
   constructor(
+    private meta: Meta,
     private router: Router,
     private _loader: LoaderService,
     private _api: ApiService,
     private _storage: StorageService,
     private _sidenav: SidenavService
   ) {
+
+    this.meta.addTag({ name: 'google', content: 'notranslate' }); // META TAG PARA QUE GOOGLE NO QUIERA TRADUCIR
+
     this.logged = this._storage.isToken();
 
     router.events.subscribe(event => {
@@ -37,14 +42,22 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this._sidenav.effects();
-
-    // HAMMERJS GESTO SWIPE RIGHT PARA ABRIR MENU ----------------------
     const sn = this._sidenav
+
+    // HAMMERJS GESTO SWIPE RIGHT SOBRE EL BODY PARA ABRIR MENU ------------------
     var hammertime = new Hammer(document.querySelector("body"), {});
     hammertime.on('swiperight', function(event) {
-      sn.toggle()
+      sn.toggle();
     });
-    // -----------------------------------------------------------------
+    // ----------------------------------------------------------------------------
+
+
+    // HAMMERJS GESTO SWIPE LEFT SOBRE EL MENU PARA CERRAR A ÉL MISMO -------------
+    var hammertime = new Hammer(document.querySelector("#idMenuLateral"), {});
+    hammertime.on('swipeleft', function(event) {
+      sn.close();
+    });
+    // ----------------------------------------------------------------------------
   }
 
   closeSession() {

@@ -9,9 +9,11 @@
 
 <i id="btnMenu" *ngIf="_storage.isToken()" (click)="_sidenav.toggle()" class="icon bordered grey large chevron inverted right"></i>
 
-<div class="ui wide sidebar left vertical labeled menu inverted">
+<div id="idMenuLateral" class="ui sidebar left vertical labeled menu inverted">
 
-  <!-- <img class="ui image centered" width="60%" style="margin-top:5%;" alt="http://www.agdseguridad.com.ar" src="assets/logo.png"> -->
+  <!-- <a class="item">
+    <img class="ui small image centered" alt="http://www.agdseguridad.com.ar" src="assets/menu_header.png">
+  </a> -->
 
   <a *ngIf="!_storage.isToken()" routerLink="login" class="item"> <i class="icon caret right"></i> Iniciar Sesión</a>
 
@@ -24,7 +26,7 @@
 
   <a *ngIf="_storage.isToken()" (click)="closeSession()" class="item"> <i class="icon caret right"></i> Cerrar Sesión</a>
 
-  <div id="idLastUpdate" class="item">Ver 1.7rc • 04-03-2020</div>
+  <div id="idLastUpdate" class="item">v1.8.1rc<br>09-03-2020</div>
 
 </div>
 <div class="pusher">
@@ -37,7 +39,9 @@
       <!-- <div class="ui divider"></div> -->
 
       <div id="imgLogo" class="ui">
-        <img class="ui small image centered" style="margin-bottom:15px;" alt="http://www.agdseguridad.com.ar" src="assets/logo2.png">
+        <a href="http://app.agdseguridad.com.ar/">
+          <img class="ui small image centered" style="margin-bottom:15px;" alt="http://www.agdseguridad.com.ar" src="assets/logo2.png">
+        </a>
       </div>
 
       <router-outlet></router-outlet>

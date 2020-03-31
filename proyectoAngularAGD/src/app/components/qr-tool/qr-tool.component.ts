@@ -31,6 +31,7 @@ export class QrToolComponent implements OnInit {
 
     // HARDCODE ================================================================================================================
     // let aleatorio = Math.floor(Math.random() * (90 - 2)) + 2; // HARDCODE HARDCODE HARDCODE HARDCODE
+    // aleatorio = 55
     // this.qrReadResult.emit( this.convertQRtoJSON("TYPE=Computer\r\nID="+aleatorio) ); // HARDCODE HARDCODE HARDCODE HARDCODE
     // HARDCODE ================================================================================================================
   }

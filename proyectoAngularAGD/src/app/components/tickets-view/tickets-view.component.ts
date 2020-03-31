@@ -19,7 +19,7 @@ export class TicketsViewComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.getAlltickets()
+    this.getTicketsAccordingCheckbox()
   }
 
   private tickets:ItemComputer
@@ -33,28 +33,56 @@ export class TicketsViewComponent implements OnInit {
 
   checkbox(){
     if ( (<any>$('.ui.checkbox')).checkbox("is checked") ) {
-      this.condicionTickets = [4,5];
+      //this.condicionTickets = [4,5];
+      this.getTicketsClosed();
     } else {
-      this.condicionTickets = [0,1,2,3,4];
+      this.getTicketsOpened();
+      //this.condicionTickets = [0,1,2,3,4];
       //this.condicionTickets.filter(item => item != 5);
     }
-    console.log(this.condicionTickets)
+    //console.log(this.condicionTickets)
   }
 
-  isStatusOnArray(buscado:number):boolean {
-    const data = [1, 2, 3, 4, 5];   ​
-    let found = this.condicionTickets.find(element => element == buscado);
-      if (typeof found == 'undefined') {
-        return false;
-      } else {
-        return true;
-      }
+  // isStatusOnArray(buscado:number):boolean {
+  //   const data = [1, 2, 3, 4, 5];   ​
+  //   let found = this.condicionTickets.find(element => element == buscado);
+  //     if (typeof found == 'undefined') {
+  //       return false;
+  //     } else {
+  //       return true;
+  //     }
+  // }
+
+  // getAlltickets() {
+  //   this._loader.On()
+  //   this._api.getAllItems('ticket', { get_hateoas: 'false', sort: 'id', order: 'desc', range: '0-' + this.cantVer } ).subscribe( (result:any)=>{
+  //     this.tickets = result.filter( item => item.status <= 6 )
+  //     //console.log(this.tickets)
+  //   }, (err) => { console.log(err) },
+  //           ()=> { this._loader.Off() });
+  // }
+
+  getTicketsAccordingCheckbox() {
+    if ( (<any>$('.ui.checkbox')).checkbox("is checked") ) {
+      this.getTicketsClosed();
+    } else {
+      this.getTicketsOpened();
+    }
   }
 
-  getAlltickets() {
+  getTicketsOpened() {
     this._loader.On()
     this._api.getAllItems('ticket', { get_hateoas: 'false', sort: 'id', order: 'desc', range: '0-' + this.cantVer } ).subscribe( (result:any)=>{
-      this.tickets = result.filter( item => item.status <= 6 )
+      this.tickets = result.filter( item => item.status <= 4 )
+      //console.log(this.tickets)
+    }, (err) => { console.log(err) },
+            ()=> { this._loader.Off() });
+  }
+
+  getTicketsClosed() {
+    this._loader.On()
+    this._api.getAllItems('ticket', { get_hateoas: 'false', sort: 'id', order: 'desc', range: '0-' + this.cantVer } ).subscribe( (result:any)=>{
+      this.tickets = result.filter( item => item.status >= 5 )
       //console.log(this.tickets)
     }, (err) => { console.log(err) },
             ()=> { this._loader.Off() });

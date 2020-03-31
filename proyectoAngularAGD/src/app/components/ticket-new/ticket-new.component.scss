@@ -11,3 +11,10 @@
 ::-ms-input-placeholder { /* Microsoft Edge */
   color: RGB(240, 240, 240) !important;
 }
+
+/* On screens that are 600px or less, set the background color to olive */
+@media screen and (max-width: 80px) {
+  #_zoom {
+    zoom: 0.7 !important;
+  }
+}

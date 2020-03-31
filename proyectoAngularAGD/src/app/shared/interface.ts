@@ -41,6 +41,16 @@ export interface ItemComputer {
     uuid: string
     date_creation: string
     is_recursive: number
+    _devices?:{
+        Item_DeviceFirmware:object
+        Item_DeviceProcessor:object
+        Item_DeviceMemory:object
+        Item_DeviceHardDrive:object
+        Item_DeviceNetworkCard:object
+        Item_DeviceDrive:object
+        Item_DeviceGraphicCard:object
+        Item_DeviceControl:object
+    }
 }
 
 export interface UserObject {

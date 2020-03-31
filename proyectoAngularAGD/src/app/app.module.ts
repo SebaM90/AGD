@@ -24,6 +24,9 @@ import { TicketsViewComponent } from './components/tickets-view/tickets-view.com
 import { EntidadesHtmlPipe } from './pipes/entidades-html.pipe';
 import { InventoryViewComponent } from './components/inventory-view/inventory-view.component';
 
+import {NgxPaginationModule} from 'ngx-pagination';
+import { SanitizeHtmlPipe } from './pipes/sanitize-html.pipe';
+
 // Rutas
 const rutas: Routes = [
   { path: 'login', component: LoginComponent },
@@ -46,7 +49,8 @@ const rutas: Routes = [
     TicketNewComponent,
     TicketsViewComponent,
     EntidadesHtmlPipe,
-    InventoryViewComponent
+    InventoryViewComponent,
+    SanitizeHtmlPipe
   ],
   imports: [
     BrowserModule,
@@ -56,7 +60,8 @@ const rutas: Routes = [
     HttpClientModule,
     AppRoutingModule,
     QrCodeAllModule,
-    ZXingScannerModule
+    ZXingScannerModule,
+    NgxPaginationModule
   ],
   providers: [{provide : LocationStrategy , useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]

@@ -53,10 +53,30 @@ export class ApiService {
     return this._http.get<ItemComputer>( this.API_URL + item, {headers: headers, params: params} )
   }
 
-  getItem(item:string, id:number): Observable<ItemComputer> {
+  getItem(item:string, id:number, parameters:any={}): Observable<ItemComputer> {
     let headers = new HttpHeaders({ 'Content-Type': this.CONTENT_TYPE, 'App-Token': this.APP_TOKEN, 'Session-Token': this._storage.getToken()});
-    return this._http.get<ItemComputer>( this.API_URL + item + "\\" + id, {headers: headers} )
+    let params = new HttpParams({ fromObject: parameters });
+    return this._http.get<ItemComputer>( this.API_URL + item + "\\" + id, {headers: headers, params: params} )
   }
+
+  // Traer todas los TASK (seguimientos, intervenciones, soluciones) de los TICKETS
+  getAllTasksFromTicket(id:number, parameters:any): Observable<ItemComputer> {
+    let headers = new HttpHeaders({ 'Content-Type': this.CONTENT_TYPE, 'App-Token': this.APP_TOKEN, 'Session-Token': this._storage.getToken()});
+    let params = new HttpParams({ fromObject: parameters });
+    return this._http.get<ItemComputer>( this.API_URL + "ticket\\" + id + "\\TicketTask", {headers: headers, params: params} )
+  }
+
+  // Traer todos los TICKETS que tienen una determinada COMPUTER
+  getAllTiketsFromComputer(item:string, id:number, parameters:any): Observable<ItemComputer> {
+    let headers = new HttpHeaders({ 'Content-Type': this.CONTENT_TYPE, 'App-Token': this.APP_TOKEN, 'Session-Token': this._storage.getToken()});
+    let params = new HttpParams({ fromObject: parameters });
+    return this._http.get<ItemComputer>( this.API_URL + item + "\\" + id + "\\Item_Ticket", {headers: headers, params: params} )
+  }
+
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------- SETTERS ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   setItem(item:string, content:object): Observable<ItemComputer> {
     let headers = new HttpHeaders({ 'Content-Type': this.CONTENT_TYPE, 'App-Token': this.APP_TOKEN, 'Session-Token': this._storage.getToken()});
