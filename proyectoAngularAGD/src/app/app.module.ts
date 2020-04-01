@@ -26,6 +26,7 @@ import { InventoryViewComponent } from './components/inventory-view/inventory-vi
 
 import {NgxPaginationModule} from 'ngx-pagination';
 import { SanitizeHtmlPipe } from './pipes/sanitize-html.pipe';
+import { ConfigurationsComponent } from './components/configurations/configurations.component';
 
 // Rutas
 const rutas: Routes = [
@@ -34,6 +35,7 @@ const rutas: Routes = [
   { path: 'reclamos/ver', component: TicketsViewComponent, canActivate: [AuthGuard] },
   { path: 'inventario/escanear', component: InventoryReadComponent, canActivate: [AuthGuard] },
   { path: 'inventario/ver', component: InventoryViewComponent, canActivate: [AuthGuard] },
+  { path: 'configuraciones', component: ConfigurationsComponent, canActivate: [AuthGuard] },
   { path: '', component: LoginComponent },
   { path: '**', redirectTo: 'error' },
   { path: 'error', component: NotFoundComponent }
@@ -50,7 +52,8 @@ const rutas: Routes = [
     TicketsViewComponent,
     EntidadesHtmlPipe,
     InventoryViewComponent,
-    SanitizeHtmlPipe
+    SanitizeHtmlPipe,
+    ConfigurationsComponent
   ],
   imports: [
     BrowserModule,

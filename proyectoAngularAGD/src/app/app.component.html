@@ -21,12 +21,13 @@
     <a routerLink="reclamos/nuevo" class="item"> <i class="icon caret right"></i>Nuevo Ticket</a>
     <a routerLink="reclamos/ver" class="item"> <i class="icon caret right"></i>Ver mis Tickets</a>
     <a routerLink="inventario/escanear" class="item"> <i class="icon caret right"></i>Leer Código QR</a>
+    <a routerLink="configuraciones" class="item"> <i class="icon caret right"></i>Preferencias</a>
     <!-- <a routerLink="inventario/ver" class="item"> <i class="icon caret right"></i> Ver Inventario </a> -->
   </ng-container>
 
   <a *ngIf="_storage.isToken()" (click)="closeSession()" class="item"> <i class="icon caret right"></i> Cerrar Sesión</a>
 
-  <div id="idLastUpdate" class="item">v1.8.1rc<br>09-03-2020</div>
+  <div id="idLastUpdate" class="item">v2.1.0rc<br>31-03-2020</div>
 
 </div>
 <div class="pusher">

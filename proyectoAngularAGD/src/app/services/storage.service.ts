@@ -71,6 +71,11 @@ export class StorageService {
   removeSavedUser(){    this.removeData(this.keyStorageUser)  }
   removeSavedPass(){    this.removeData(this.keyStoragePass)  }
 
-  removeALL(){    localStorage.clear();  }
 
+  // GET/SET OTROS VALORES QUE NO SEAN LAS CREDENCIALES, ETC
+  setValue(key:string, data:string){  this.setData(key, data)  }
+  getValue(key:string) {    return this.getData( key )  }
+  // ---------------------------------------------------------------
+
+  removeALL(){    localStorage.clear();  }
 }
