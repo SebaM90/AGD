@@ -23,10 +23,10 @@ export class AppComponent implements OnInit {
   constructor(
     private meta: Meta,
     private router: Router,
-    private _loader: LoaderService,
+    public _loader: LoaderService,
     private _api: ApiService,
-    private _storage: StorageService,
-    private _sidenav: SidenavService
+    public _storage: StorageService,
+    public _sidenav: SidenavService
   ) {
 
     this.meta.addTag({ name: 'google', content: 'notranslate' }); // META TAG PARA QUE GOOGLE NO QUIERA TRADUCIR

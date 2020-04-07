@@ -42,15 +42,32 @@ export interface ItemComputer {
     date_creation: string
     is_recursive: number
     _devices?:{
-        Item_DeviceFirmware:object
-        Item_DeviceProcessor:object
-        Item_DeviceMemory:object
-        Item_DeviceHardDrive:object
-        Item_DeviceNetworkCard:object
-        Item_DeviceDrive:object
-        Item_DeviceGraphicCard:object
-        Item_DeviceControl:object
+        Item_DeviceFirmware?:{
+                [key:string]:object
+            }
+        Item_DeviceProcessor?:{
+                [key:string]:object
+            }
+        Item_DeviceMemory?:{
+                [key:string]:object
+            }
+        Item_DeviceHardDrive?:{
+                [key:string]:object
+            }
+        Item_DeviceNetworkCard?:{
+                [key:string]:object
+            }
+        Item_DeviceDrive?:{
+                [key:string]:object
+            }
+        Item_DeviceGraphicCard?:{
+                [key:string]:object
+            }
+        Item_DeviceControl?:{
+                [key:string]:object
+            }
     }
+    _disks: object
 }
 
 export interface UserObject {

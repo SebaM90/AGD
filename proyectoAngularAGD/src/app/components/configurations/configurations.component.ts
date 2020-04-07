@@ -9,14 +9,14 @@ import { empty } from 'rxjs';
 })
 export class ConfigurationsComponent implements OnInit {
 
-  constructor( private _storage: StorageService ) { }
+  constructor( public _storage: StorageService ) { }
 
   ngOnInit() {
     this.phone_cel = parseInt( this.get() );
   }
 
   protected KEY_CEL:string = 'agd-config-celular';
-  private phone_cel:number;
+  public phone_cel:number;
 
   set(){
 

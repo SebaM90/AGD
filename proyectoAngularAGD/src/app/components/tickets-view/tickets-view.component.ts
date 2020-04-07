@@ -13,17 +13,18 @@ import * as $AB from 'jquery';
 export class TicketsViewComponent implements OnInit {
 
   constructor(
-    private _loader: LoaderService,
+    public _loader: LoaderService,
     private _api: ApiService,
-    private _storage: StorageService
+    public _storage: StorageService
   ) {}
 
   ngOnInit() {
     this.getTicketsAccordingCheckbox()
   }
 
-  private tickets:ItemComputer
-  private cantVer:number = 20
+  p: number
+  public tickets:any
+  public cantVer:number = 20
   private condicionTickets = [1,2,3,4]
                           // ESTADOS DE LOS TICKETS
                           // 2 → Processing (assigned)

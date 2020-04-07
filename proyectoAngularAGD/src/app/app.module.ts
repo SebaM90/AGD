@@ -14,7 +14,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { QrToolComponent } from './components/qr-tool/qr-tool.component';
 
-import { QrCodeAllModule } from 'ngx-qrcode-all';
+//import { QrCodeAllModule } from 'ngx-qrcode-all';
 import { ZXingScannerModule } from '@zxing/ngx-scanner'; // https://www.npmjs.com/package/@zxing/ngx-scanner
 
 import { NotFoundComponent } from './components/not-found/not-found.component';
@@ -62,7 +62,6 @@ const rutas: Routes = [
     RouterModule.forRoot(rutas),
     HttpClientModule,
     AppRoutingModule,
-    QrCodeAllModule,
     ZXingScannerModule,
     NgxPaginationModule
   ],
@@ -70,4 +69,5 @@ const rutas: Routes = [
   bootstrap: [AppComponent]
 })
 
+//QrCodeAllModule,
 export class AppModule { }

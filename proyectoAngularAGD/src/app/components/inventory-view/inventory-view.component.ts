@@ -11,7 +11,7 @@ import { ItemComputer } from 'src/app/shared/interface';
 export class InventoryViewComponent implements OnInit {
 
   constructor(
-    private _loader: LoaderService,
+    public _loader: LoaderService,
     private _api: ApiService
   ) {}
 
@@ -19,6 +19,7 @@ export class InventoryViewComponent implements OnInit {
     this.getAlltickets()
   }
 
+  tickets:any
   private inventory:ItemComputer
 
   getAlltickets() {

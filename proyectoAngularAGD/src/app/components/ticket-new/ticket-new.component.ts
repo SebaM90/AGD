@@ -12,9 +12,9 @@ import { StorageService } from 'src/app/services/storage.service';
 export class TicketNewComponent implements OnInit {
 
   constructor(
-    private _loader: LoaderService,
+    public _loader: LoaderService,
     private _api: ApiService,
-    private _storage: StorageService
+    public _storage: StorageService
   ) { }
 
   ngOnInit() {
@@ -29,8 +29,8 @@ export class TicketNewComponent implements OnInit {
   }
 
   private prueba:any;
-  private qrON:boolean = false;
-  private arrayItems = [];
+  public qrON:boolean = false;
+  public arrayItems = [];
 
   
   // Para volver a empezar de cero

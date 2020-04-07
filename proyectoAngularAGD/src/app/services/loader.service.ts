@@ -7,7 +7,7 @@ import { SidenavService } from './sidenav.service';
 export class LoaderService {
 
   constructor(
-    private _sidenav: SidenavService
+    public _sidenav: SidenavService
   ) { }
 
   public active:boolean = false;

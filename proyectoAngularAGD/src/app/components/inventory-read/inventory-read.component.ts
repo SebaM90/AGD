@@ -19,24 +19,24 @@ export class InventoryReadComponent implements OnInit {
 
   constructor(
     private _api: ApiService,
-    private _loader: LoaderService
+    public _loader: LoaderService
   ) { }
 
   ngOnInit() {
   }
 
-  private qrON:boolean = true;
-  private item:ItemComputer;
+  public qrON:boolean = true;
+  public item:ItemComputer;
 
-  private ticketsID:any; // Array de la busqueda de tickets por PC. Solo tengo el ID de cada TICKET
-  private tickets:Array<ItemComputer>=[]; // Array de tickets completos con su contenido
+  public ticketsID:any; // Array de la busqueda de tickets por PC. Solo tengo el ID de cada TICKET
+  public tickets:Array<ItemComputer>=[]; // Array de tickets completos con su contenido
 
   getQR(event:QRCodeRead):void {
     // Si recibo NULL del QR-TOOL, entonces termino, sino, sigo curso...
     ( !event ) ? this.errorHandler(null) : this.getItem( event.type, event.id )
   }
 
-  private arrayDevices:ItemComputer;
+  public arrayDevices:ItemComputer;
 
   getItem(tipoElemento:string, id:number) {
     this._loader.On()
@@ -60,8 +60,6 @@ export class InventoryReadComponent implements OnInit {
           this.item = response
           this.item.itemType = 'Computer' // ESTA PROPIEDAD LA TENGO QUE AGREGAR HARDCODEADA PORQUE EL GLPi NO ME LO INFORMA.
 
-          console.clear();
-          console.log(response._devices);
           this.arrayDevices = response
 
           let obsMemories:Array<any>=[] // Array de observables

@@ -13,7 +13,7 @@ export class ApiService {
   public currentUser:Observable<SessionUser>;
 
   constructor(
-    private _storage: StorageService,
+    public _storage: StorageService,
     private _http: HttpClient
   ) {}
 

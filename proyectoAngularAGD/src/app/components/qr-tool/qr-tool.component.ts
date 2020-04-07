@@ -16,7 +16,7 @@ export class QrToolComponent implements OnInit {
   @Input() switchedOn:boolean = false;
   @Output() qrReadResult = new EventEmitter();
 
-  @ViewChild('scanner', { static: false })
+  @ViewChild('scanner')
   scanner: ZXingScannerComponent;
 
   constructor(
