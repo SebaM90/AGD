@@ -56,9 +56,13 @@ export class LoginComponent implements OnInit {
         this._storage.setSavedUser(user);
         this._storage.setSavedPass(pass);
         
+        // Si el usuario NO tiene guardado un celular, lo redirecciono a 'preferencias' sino a 'nuevo ticket'
+        let celular = parseInt(this._storage.getValue('agd-config-celular'));
+        ( celular && celular>0 ) ? this.router.navigate(['/reclamos/nuevo']) : this.router.navigate(['/configuraciones'])
+
         // MOSTRAR INFORMACION DE USUARIO -------
         // this.apiGetUserInfo();       
-        this.router.navigate(['/reclamos/nuevo']); // Quitar esta linea si se descomenta lo anterior
+        //this.router.navigate(['/reclamos/nuevo']); // Quitar esta linea si se descomenta lo anterior
         // --------------------------------------
 
       }, (err) => { this.errorHandler(err) },
@@ -74,9 +78,9 @@ export class LoginComponent implements OnInit {
         this.currentUser.minPic = "https://ping.webhop.org:8889/glpi/front/document.send.php?file=_pictures/" + this.currentUser.picture.replace('.png','_min.png')
         this.currentUser.maxPic = "https://ping.webhop.org:8889/glpi/front/document.send.php?file=_pictures/" + this.currentUser.picture
 
-          timer(1500).subscribe( () => { 
-            this.router.navigate(['/reclamos/nuevo']); // DELAY / RETRASO ANTES DE RE-DIRIGIR A LA PAGINA DE NUEVOS RECLAMOS
-          })
+          // timer(1500).subscribe( () => { 
+          //   this.router.navigate(['/reclamos/nuevo']); // DELAY / RETRASO ANTES DE RE-DIRIGIR A LA PAGINA DE NUEVOS RECLAMOS
+          // })
           this.router.navigate(['/reclamos/nuevo']);
           
       }, (err) => { this.errorHandler(err) },

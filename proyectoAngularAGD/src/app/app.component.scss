@@ -3,8 +3,21 @@
   z-index: 999;
 }
 
+#menuItemUser {
+  color: darkorange;
+  background-color: black;
+  margin: 0;
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
+  border-bottom: darkorange 0.2px solid;
+}
+
 #idMenuLateral {
   font-size: 1.5em;
+}
+
+#idMenuLateral a {
+  text-align: right;
 }
 
 #imgLogo {

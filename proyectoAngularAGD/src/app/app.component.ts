@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ɵConsole } from '@angular/core';
 import { Router, NavigationStart } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { StorageService } from 'src/app/services/storage.service';
@@ -7,6 +7,8 @@ import { LoaderService } from './services/loader.service';
 import { Meta } from '@angular/platform-browser';
 import * as Hammer from 'hammerjs';
 
+// COVID19
+import { NovelCovid } from 'novelcovid';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +19,9 @@ export class AppComponent implements OnInit {
 
   public loadingData: boolean = false;
   private logged:boolean = false
+
+  // COVID19
+  public covid19: any;
 
   title = 'proyectoAngularAGD';
 
@@ -38,6 +43,13 @@ export class AppComponent implements OnInit {
         this._sidenav.close();
       }
     })
+
+    const track = new NovelCovid();
+    track.countries('Argentina').then( res => { this.covid19 = res; console.log(res) })
+  }
+
+  coronavirus(){
+      window.open('https://www.worldometers.info/coronavirus/country/argentina/')
   }
 
   ngOnInit() {
@@ -58,6 +70,7 @@ export class AppComponent implements OnInit {
       sn.close();
     });
     // ----------------------------------------------------------------------------
+
   }
 
   closeSession() {

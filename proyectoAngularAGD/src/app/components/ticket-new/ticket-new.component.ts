@@ -66,9 +66,17 @@ export class TicketNewComponent implements OnInit {
 
   apiCreateTicket(){
 
-    // Si el usuario tiene guarado un celular, lo agrego al final del contenido del ticket
+
+    let username = this._storage.getValue('agd-config-username');
     let celular = this._storage.getValue('agd-config-celular');
-    if ( celular && celular.length>0 ) this.ticket.content += "\n (https://wa.me/5411" + celular + ")";
+
+    if ( username.length>0 || celular.length>0 ) this.ticket.content += "<hr>";
+
+    // Si el usuario tiene guarado el username, lo agrego al final del contenido del ticket
+    if ( username && username.length>0 ) this.ticket.content += "(" + username + ") \n";
+
+    // Si el usuario tiene guarado un celular, lo agrego al final del contenido del ticket
+    if ( celular && celular.length>0 ) this.ticket.content += "(https://wa.me/54" + celular + ") \n";
 
     this._loader.On();
     this._api.setItem( "ticket", {input: this.ticket } ).subscribe((res) => {

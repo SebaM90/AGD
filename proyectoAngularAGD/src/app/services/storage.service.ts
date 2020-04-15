@@ -77,5 +77,7 @@ export class StorageService {
   getValue(key:string) {    return this.getData( key )  }
   // ---------------------------------------------------------------
 
+  removeValue(key:string) {  this.removeData( key )  }
+
   removeALL(){    localStorage.clear();  }
 }

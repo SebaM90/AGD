@@ -1,24 +1,52 @@
-<div class="ui form">
+<ng-container *ngIf="msgListo">
+  <div class="ui positive message">
+    <div class="header">
+      ¡Guardado Correcto!
+    </div>
+    <p>Redirigiendo hacia <b>Nuevo Ticket</b>...</p>
+  </div>
+</ng-container>
+
+<div class="ui form" *ngIf="!msgListo">
+
+  <div class="ui blue icon message">
+    <i class="cogs icon"></i>
+    <div class="content">
+      <div class="header">
+        Completá tus datos
+      </div>
+      <p>Así te podemos contactar cuando crées un ticket</p>
+    </div>
+  </div>
 
   <div class="inline fields">
-
     <div class="sixteen wide field">
-
-      <label>Celular:</label>
-
-      <div class="ui labeled input">
-        <div class="ui label"> +54 (11) </div>
-        <input [(ngModel)] = "phone_cel"
-                      type = "number"
-                   (keyup) = "set()">
+      <label>Nombre:</label>
+      <div class="ui labeled icon input">
+        <i class="close orange link icon" (click)="clean( KEY_USER_NAME )"></i>
+        <input [(ngModel)]="user_name" maxlength="25">
       </div>
-
-      <button class="ui negative button" (click)="clean()">
-        Borrar
-      </button>
-
     </div>
+  </div>
 
+  <div class="inline fields">
+    <div class="sixteen wide field">
+      <label>Celular:</label>
+      <div class="ui labeled icon input">
+        <div class="ui label"> +54 </div>
+        <i class="close orange link icon" (click)="clean( KEY_CEL )"></i>
+        <input [(ngModel)]="phone_cel" type="number" (keyup)="validateCel()">
+      </div>
+    </div>
+  </div>
+
+  <div class="inline fields">
+    <div class="sixteen wide field">
+      <button class="ui yellow button fluid" (click)="setAll()" [ngClass]="{'disabled': (phone_cel<=0 && user_name.length<=0) }">
+        <i class="save icon"></i>
+        Guardar cambios
+      </button>
+    </div>
   </div>
 
 </div>
