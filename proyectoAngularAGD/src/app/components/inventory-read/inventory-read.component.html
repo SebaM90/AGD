@@ -16,7 +16,7 @@
   
   <div class="ui center aligned compact segments">
 
-    <div class="ui left aligned segment"> <a class="ui red ribbon label">ELEMENTO</a> <b>{{ "Computadora" | uppercase }}</b> </div>
+    <div class="ui left aligned segment"> <a class="ui red ribbon label">ELEMENTO</a> <b>{{ item?.itemType | uppercase }}</b> </div>
     <div class="ui tiny left aligned segment"> <a class="ui tiny red ribbon label">IDENTIFICADOR</a> {{ item?.id }} </div>
     <div class="ui left aligned segment"> <a class="ui tiny red ribbon label">INVENTARIO</a> {{ item?.otherserial }} </div>
     <div class="ui tiny left aligned segment"> <a class="ui tiny red ribbon label">NOMBRE</a> {{ item?.name }} </div>
@@ -24,42 +24,44 @@
   </div>
 
 
-  <div>
-    <div class="ui tiny blue message" style="margin: 0.2em;" *ngIf="item">
-      <div class="header">CPU</div>
-      <p *ngFor="let item of arrayDevices._devices.Item_DeviceProcessor | keyvalue" style="text-align:left;">
-        • {{ item.value.API.designation }} ({{ item.value.frequency }}MHz, {{ item.value.nbcores }} Núcleo/s, {{ item.value.nbthreads }} Hilo/s)
-      </p>
-    </div>
+  <ng-container *ngIf="item?.itemType=='Computer'">
+    <div>
+      <div class="ui tiny blue message" style="margin: 0.2em;" *ngIf="item">
+        <div class="header">CPU</div>
+        <p *ngFor="let item of arrayDevices._devices.Item_DeviceProcessor | keyvalue" style="text-align:left;">
+          • {{ item.value.API.designation }} ({{ item.value.frequency }}MHz, {{ item.value.nbcores }} Núcleo/s, {{ item.value.nbthreads }} Hilo/s)
+        </p>
+      </div>
 
-    <div class="ui tiny blue message" style="margin: 0.2em;" *ngIf="item">
-      <div class="header">MEMORIA RAM</div>
-      <p *ngFor="let item of arrayDevices._devices.Item_DeviceMemory | keyvalue" style="text-align:left;">
-        • {{ item.value.API.designation }} {{ item.value.API.frequence }}MHz de {{ item.value.size / 1024 }}GB
-      </p>
-    </div>
+      <div class="ui tiny blue message" style="margin: 0.2em;" *ngIf="item">
+        <div class="header">MEMORIA RAM</div>
+        <p *ngFor="let item of arrayDevices._devices.Item_DeviceMemory | keyvalue" style="text-align:left;">
+          • {{ item.value.API.designation }} {{ item.value.API.frequence }}MHz de {{ item.value.size / 1024 }}GB
+        </p>
+      </div>
 
-    <div class="ui tiny blue message" style="margin: 0.2em;" *ngIf="item">
-      <div class="header">ALMACENAMIENTO FÍSICO</div>
-      <p *ngFor="let item of arrayDevices._devices.Item_DeviceHardDrive | keyvalue" style="text-align:left;">
-        • {{ item.value.capacity / 1024 | number:'1.1-1' }}GB ({{ item.value.API.designation }})
-      </p>
-    </div>
+      <div class="ui tiny blue message" style="margin: 0.2em;" *ngIf="item">
+        <div class="header">ALMACENAMIENTO FÍSICO</div>
+        <p *ngFor="let item of arrayDevices._devices.Item_DeviceHardDrive | keyvalue" style="text-align:left;">
+          • {{ item.value.capacity / 1024 | number:'1.1-1' }}GB ({{ item.value.API.designation }})
+        </p>
+      </div>
 
-    <div class="ui tiny blue message" style="margin: 0.2em;" *ngIf="item">
-      <div class="header">UNIDADES LÓGICAS</div>
-      <p *ngFor="let item of arrayDevices._disks" style="text-align:left;">
-        • "{{ item.name.mountpoint }}" de {{ item.name.totalsize / 1024 | number:'1.1-1' }}GB ({{ item.name.freesize * 100 / item.name.totalsize | number:'1.1-1' }}% utilizado)
-      </p>
-    </div>
+      <div class="ui tiny blue message" style="margin: 0.2em;" *ngIf="item">
+        <div class="header">UNIDADES LÓGICAS</div>
+        <p *ngFor="let item of arrayDevices._disks" style="text-align:left;">
+          • "{{ item.name.mountpoint }}" de {{ item.name.totalsize / 1024 | number:'1.1-1' }}GB ({{ item.name.freesize * 100 / item.name.totalsize | number:'1.1-1' }}% utilizado)
+        </p>
+      </div>
 
-    <div class="ui tiny blue message" style="margin: 0.2em;" *ngIf="item">
-      <div class="header">BIOS</div>
-      <p *ngFor="let item of arrayDevices._devices.Item_DeviceFirmware | keyvalue" style="text-align:left;">
-        • {{ item.value.API.designation }} ( <b>{{ item.value.API.date }}</b> )
-      </p>
+      <div class="ui tiny blue message" style="margin: 0.2em;" *ngIf="item">
+        <div class="header">BIOS</div>
+        <p *ngFor="let item of arrayDevices._devices.Item_DeviceFirmware | keyvalue" style="text-align:left;">
+          • {{ item.value.API.designation }} ( <b>{{ item.value.API.date }}</b> )
+        </p>
+      </div>
     </div>
-  </div>
+  </ng-container>
 
   <!-- <div class="ui styled accordion">
     <div class="title">

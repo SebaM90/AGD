@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { StorageService } from 'src/app/services/storage.service';
-import { LoginResponse, ItemComputer, UserObject, SessionUser } from '../shared/interface';
+import { LoginResponse, Search, ItemComputer, UserObject, SessionUser } from '../shared/interface';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 
@@ -57,6 +57,19 @@ export class ApiService {
     let headers = new HttpHeaders({ 'Content-Type': this.CONTENT_TYPE, 'App-Token': this.APP_TOKEN, 'Session-Token': this._storage.getToken()});
     let params = new HttpParams({ fromObject: parameters });
     return this._http.get<ItemComputer>( this.API_URL + item + "\\" + id, {headers: headers, params: params} )
+  }
+
+  // Obtener ID (y otras datos menos importantes) de un item mediante el numero de inventario (Fussion Inventory)
+  getIdItemByInventory(item:string, inventory:string, parameters:any={}): Observable<Search> {
+    let headers = new HttpHeaders({ 'Content-Type': this.CONTENT_TYPE, 'App-Token': this.APP_TOKEN, 'Session-Token': this._storage.getToken()});
+    parameters = {
+           'criteria[0][field]': 6,
+      'criteria[0][searchtype]': 'equals',
+           'criteria[0][value]': inventory,
+              'forcedisplay[0]': 2,
+    };
+    let params = new HttpParams({ fromObject: parameters });
+    return this._http.get<Search>( this.API_URL + "search\\" + item, {headers: headers, params: params} )
   }
 
   // Traer todas los TASK (seguimientos, intervenciones, soluciones) de los TICKETS

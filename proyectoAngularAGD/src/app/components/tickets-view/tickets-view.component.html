@@ -42,7 +42,8 @@
               <td class="center aligned"> <i class="icon" [ngClass]="(item.status >= 5) ? 'check circle' : 'exclamation circle'"></i>   N° {{item.id}}    </td>
               <td>               <i class="info icon"></i>      {{item.name}}  </td>
               <!--<td [innerHtml]="item.content | entidadesHtml"></td> -->
-              <td>               <i class="bars icon"></i> <em> {{item.content | entidadesHtml}} </em> </td>
+              <td>               <i class="bars icon"></i> <em [innerHTML]="item.content | unescape"> </em> </td>
+              
             </tr>
 
 

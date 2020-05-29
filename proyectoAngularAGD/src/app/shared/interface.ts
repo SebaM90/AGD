@@ -10,6 +10,15 @@ export interface QRCodeRead {
     qr_hour: string
 }
 
+export interface Search {
+    totalcount: number;
+    count: number;
+    sort: number;
+    order: string;
+    data?: [{}] | null;
+    'content-range': string;
+}
+
 export interface ItemComputer {
     itemType: string // Este esta Hardcodeado
     id: number

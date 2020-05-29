@@ -27,6 +27,7 @@ import { InventoryViewComponent } from './components/inventory-view/inventory-vi
 import {NgxPaginationModule} from 'ngx-pagination';
 import { SanitizeHtmlPipe } from './pipes/sanitize-html.pipe';
 import { ConfigurationsComponent } from './components/configurations/configurations.component';
+import { UnescapePipe } from './pipes/unescape.pipe';
 
 // Rutas
 const rutas: Routes = [
@@ -53,7 +54,8 @@ const rutas: Routes = [
     EntidadesHtmlPipe,
     InventoryViewComponent,
     SanitizeHtmlPipe,
-    ConfigurationsComponent
+    ConfigurationsComponent,
+    UnescapePipe
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
-import { QRCodeRead, ItemComputer } from 'src/app/shared/interface';
+import { QRCodeRead, Search, ItemComputer } from 'src/app/shared/interface';
 import { LoaderService } from 'src/app/services/loader.service';
 import { isArray, isObject } from 'util';
 import { forkJoin, Observable } from 'rxjs';
@@ -33,12 +33,12 @@ export class InventoryReadComponent implements OnInit {
 
   getQR(event:QRCodeRead):void {
     // Si recibo NULL del QR-TOOL, entonces termino, sino, sigo curso...
-    ( !event ) ? this.errorHandler(null) : this.getItem( event.type, event.id )
+    ( !event ) ? this.errorHandler(null) : this.getItem( event.type, event.id, event.id_inventory )
   }
 
   public arrayDevices:ItemComputer;
 
-  getItem(tipoElemento:string, id:number) {
+  getItem(tipoElemento:string, id:number, inventory:string) {
     this._loader.On()
     
     if ( !tipoElemento ) {
@@ -54,41 +54,56 @@ export class InventoryReadComponent implements OnInit {
       return; // finalizamos
     }
 
-    this.item = null
-      this._api.getItem( tipoElemento, id, { get_hateoas: 'false', with_devices: 'true', with_disks: 'true' } ).subscribe(
-        (response:ItemComputer) => {
-          this.item = response
-          this.item.itemType = 'Computer' // ESTA PROPIEDAD LA TENGO QUE AGREGAR HARDCODEADA PORQUE EL GLPi NO ME LO INFORMA.
+    this._api.getIdItemByInventory( tipoElemento, inventory).subscribe(
+      (response:Search) => {
 
-          this.arrayDevices = response
+        if (response.count > 0) {
+          id = response.data[0][2]
+        } // Else, no pasa nada porque la variable 'id' ya tenia cargado el id desde el QR
 
-          let obsMemories:Array<any>=[] // Array de observables
-          let obsProcessors:Array<any>=[] // Array de observables
-          let obsFirmwares:Array<any>=[] // Array de observables
-          let obsHardDrives:Array<any>=[] // Array de observables
+        // Es decir, en este momento, obtuvimos el id mediante el Inventario
+        // o caso contrario, usamos el id del QR (que se trae desde desde antes.)
 
-          if (response) {
-            obsMemories = this.obtainArrayOfObservable( response, 'Item_DeviceMemory', 'devicememories_id', 'DeviceMemory' )
-            obsProcessors = this.obtainArrayOfObservable( response, 'Item_DeviceProcessor', 'deviceprocessors_id', 'DeviceProcessor' )
-            obsFirmwares = this.obtainArrayOfObservable( response, 'Item_DeviceFirmware', 'devicefirmwares_id', 'DeviceFirmware' )
-            obsHardDrives = this.obtainArrayOfObservable( response, 'Item_DeviceHardDrive', 'deviceharddrives_id', 'DeviceHardDrive' )
+          this.item = null
+            this._api.getItem( tipoElemento, id, { get_hateoas: 'false', with_devices: 'true', with_disks: 'true' } ).subscribe(
+              (response:ItemComputer) => {
+                this.item = response
+                this.item.itemType = tipoElemento // ESTA PROPIEDAD LA TENGO QUE AGREGAR HARDCODEADA PORQUE EL GLPi NO ME LO INFORMA.
 
-            forkJoin( obsMemories ).subscribe( res => this.addAPIresponse(response,res,'Item_DeviceMemory') )
-            forkJoin( obsProcessors ).subscribe( res => this.addAPIresponse(response,res,'Item_DeviceProcessor') )
-            forkJoin( obsFirmwares ).subscribe( res => this.addAPIresponse(response,res,'Item_DeviceFirmware') )
-            forkJoin( obsHardDrives ).subscribe( res => this.addAPIresponse(response,res,'Item_DeviceHardDrive') )
-          }
+                if ( tipoElemento === 'Computer' ) {
+                  this.arrayDevices = response
 
-          this.outItem.emit( this.item ) // Mandamos el item por el Output
-        }, (err) => {
-          this.errorHandler(err)
-        }, () => {
-          this._loader.Off()
-          this.qrON = false
-          console.log(this.arrayDevices)
-        }
-    )
-  }
+                  let obsMemories:Array<any>=[] // Array de observables
+                  let obsProcessors:Array<any>=[] // Array de observables
+                  let obsFirmwares:Array<any>=[] // Array de observables
+                  let obsHardDrives:Array<any>=[] // Array de observables
+
+                  if (response) {
+                    obsMemories = this.obtainArrayOfObservable( response, 'Item_DeviceMemory', 'devicememories_id', 'DeviceMemory' )
+                    obsProcessors = this.obtainArrayOfObservable( response, 'Item_DeviceProcessor', 'deviceprocessors_id', 'DeviceProcessor' )
+                    obsFirmwares = this.obtainArrayOfObservable( response, 'Item_DeviceFirmware', 'devicefirmwares_id', 'DeviceFirmware' )
+                    obsHardDrives = this.obtainArrayOfObservable( response, 'Item_DeviceHardDrive', 'deviceharddrives_id', 'DeviceHardDrive' )
+
+                    forkJoin( obsMemories ).subscribe( res => this.addAPIresponse(response,res,'Item_DeviceMemory') )
+                    forkJoin( obsProcessors ).subscribe( res => this.addAPIresponse(response,res,'Item_DeviceProcessor') )
+                    forkJoin( obsFirmwares ).subscribe( res => this.addAPIresponse(response,res,'Item_DeviceFirmware') )
+                    forkJoin( obsHardDrives ).subscribe( res => this.addAPIresponse(response,res,'Item_DeviceHardDrive') )
+                  }
+                } // Fin del IF
+
+                this.outItem.emit( this.item ) // Mandamos el item por el Output
+              }, (err) => {
+                this.errorHandler(err)
+              }, () => {
+                this._loader.Off()
+                this.qrON = false
+              })
+
+          }, (err) => { // Error OBVSERSABLE getIdItemByInventory
+        this.errorHandler(err)
+      }) // Fin OBVSERSABLE getIdItemByInventory
+
+  } // FIN function getItem
 
   obtainArrayOfObservable( response, item_:string, device:string, apiItem:string ):Array<any>{
     let obsSubItems:Array<any>=[] // Array de observables (de subitems, ejemplo; cada subitem seria un modulo de memoria ram)

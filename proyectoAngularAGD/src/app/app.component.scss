@@ -1,18 +1,30 @@
+$color-1: darkorange;
+$color-2: black;
+$color-3: white;
+$color-4: rgb(27,28,29);
+
+
 #btnMenu {
+  color: $color-1 !important;
+  background-color: $color-2 !important;
   position: fixed;
-  z-index: 999;
+  border-bottom: $color-1 2px solid;
+  border-right: $color-1 2px solid;
+  z-index: 2000 !important;
 }
 
 #menuItemUser {
-  color: darkorange;
-  background-color: black;
+  color: $color-1;
+  background-color: $color-2 !important;
+  height: 42px;
   margin: 0;
-  padding-top: 0.3em;
-  padding-bottom: 0.3em;
-  border-bottom: darkorange 0.2px solid;
+  padding-top: 0.4em;
+  padding-bottom: 0.2em;
+  border-bottom: $color-1 2px solid;
 }
 
 #idMenuLateral {
+  background-color: $color-4;
   font-size: 1.5em;
 }
 
@@ -26,8 +38,9 @@
 }
 
 #idLastUpdate {
+     font-size: small;
       position: absolute !important;
-           top: CALC(100% - 100px);
+           top: CALC(100% - 40px);
          width: 100%;
         border: 0 none !important;
     text-align: left;
